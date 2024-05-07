@@ -68,6 +68,20 @@
     <button id="runScriptButton">Run Script</button>
     <h3>Output:</h3>
     <textarea id="xmlOutput" readonly></textarea>
+    <button id="copyButton">Copy Text</button>
+    
+    <script>
+        document.getElementById('runScriptButton').addEventListener('click', function() {
+            // Script processing logic here
+        });
+
+        document.getElementById('copyButton').addEventListener('click', function() {
+            var copyText = document.getElementById('xmlOutput');
+            copyText.select(); // Select the text field
+            document.execCommand("copy"); // Copy the text inside the text field
+            alert("Copied to clipboard!"); // Alert the copied text
+        });
+    </script>
 
     <script>
         document.getElementById('runScriptButton').addEventListener('click', function() {
@@ -84,7 +98,8 @@
             switch(scriptType) {
                 case 'script1':
                      // Apply Script 1 modifications
- textString = textString.replace(/LBody/gm, '_3_Story_text');
+    textString = textString.replace(/<LBody>/gm, '<LBody>• ');
+    textString = textString.replace(/LBody/gm, '_3_Story_text');
     textString = textString.replace(/<Figure>[\s\S]*?<\/Figure>\n*/gi, '');
     textString = textString.replace(/<_3_Story_text><\/_3_Story_text>\n/gi, '');
     textString = textString.replace(/<_1_Story_Heading><\/_1_Story_Heading>\n/gi, '');
