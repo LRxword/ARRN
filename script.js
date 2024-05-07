@@ -2,6 +2,7 @@ document.getElementById('runScriptButton').addEventListener('click', function() 
     var textString = document.getElementById('xmlInput').value;
     textString = textString.replace(/LBody/gm, '_3_Story_text');
     textString = textString.replace(/^(.*Story_Heading.*)$/gm, '@$1');
+    textString = textString.replace(/^(.*Story_Author.*)$/gm, '@$1');
     textString = textString.replace(/^(.*Story_text.*)$/gm, '@$1');
     textString = textString.replace(/^(.*Sub_Heading.*)$/gm, '@$1');
     textString = textString.replace(/blue/gm, 'green');
@@ -17,13 +18,14 @@ document.getElementById('runScriptButton').addEventListener('click', function() 
     textString = textString.replace(/^\s*<\/p>\s*$\n/gm, '');
     textString = textString.replace(/^\s*<p\/>\s*$\n/gm, '');
     textString = textString.replace(/^\s*<p>\s*$\n/gm, '');
-        textString = textString.replace(/^\s*<\/h1>\s*$\n/gm, '');
+    textString = textString.replace(/^\s*<\/h1>\s*$\n/gm, '');
     textString = textString.replace(/^\s*<h1\/>\s*$\n/gm, '');
     textString = textString.replace(/^\s*<h1>\s*$\n/gm, '');
     textString = textString.replace(/<h1>.*\n(<h1>)/g, '$1');
     textString = textString.replace(/<\/p>\n<h1>/gm, '</p>\n    </article>\n    <article>\n<h1>');
     textString = textString.replace(/<p>/gm, '     <p>');
-    textString = textString.replace(/<h1>/gm, '     <h1>');
+    textString = textString.replace(/<h1>/gm, '     <div class="title"><h1>');
+    textString = textString.replace(/<\/h1>/gm, '</h1></div>');
     
     const htmlHeaderContent = `
 <!DOCTYPE html>
