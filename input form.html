@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Super XML Magic Tool</title> <!-- Fun and interesting title -->
+<style>
+    body {
+        font-family: Arial, sans-serif; /* Sets a clean and modern font */
+        background-color: #f4f4f9; /* Light grey background for a subtle look */
+        color: #333; /* Dark grey text for readability */
+    }
+    textarea {
+        width: 90%;
+        height: 300px;
+        margin: 10px auto; /* Center align by setting automatic horizontal margins */
+        display: block;
+        padding: 10px; /* Padding inside the textareas */
+        border-radius: 8px; /* Rounded corners for the textareas */
+        border: 2px solid #005A9C; /* Solid blue border */
+        background-color: #ffffff; /* White background for the textareas */
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Subtle shadow effect */
+    }
+    button {
+        margin: 10px auto;
+        display: block; /* Center the button */
+        padding: 10px 20px; /* Padding inside the button */
+        font-size: 16px; /* Larger font size for better readability */
+        color: #ffffff; /* White text color */
+        background-color: #007BFF; /* Bright blue background color */
+        border: none; /* No border */
+        border-radius: 5px; /* Rounded corners for the button */
+        cursor: pointer; /* Pointer cursor on hover */
+        transition: background-color 0.3s; /* Smooth transition for hover effect */
+    }
+    button:hover {
+        background-color: #0056b3; /* Darker blue when hovering over the button */
+    }
+    h3 {
+        text-align: center; /* Center-align the heading */
+        color: #005A9C; /* Blue color for the heading to match the theme */
+    }
+</style>
+</head>
+<body>
+    <textarea id="xmlInput" placeholder="Paste your XML here..."></textarea>
+    <button id="runScriptButton">Run Script</button>
+    <h3>Processed XML:</h3>
+    <textarea id="xmlOutput" readonly></textarea>
+</body>
+<script src="script.js"></script>
+</html>
