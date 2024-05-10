@@ -162,7 +162,10 @@
                     break;
                 case 'script2':
                     // Modifications for script 2
-                    textString = modifyTextForScript2(textString);
+    textString = textString.replace(/^(<P>.*)$/gm, '@$1');
+    textString = textString.split('\n').filter(line => 
+        !line.includes('<Figure>') && line.startsWith('@')
+    ).join('\n');
                     break;
                 case 'script3':
                     // Modifications for script 3
