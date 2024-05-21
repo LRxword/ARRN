@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Super XML Magic Tool</title>
+<title>XML converter</title>
 <style>
     body {
         font-family: Arial, sans-serif;
@@ -56,9 +56,9 @@
 <body>
     <textarea id="xmlInput" placeholder="Paste your XML here..."></textarea>
     <select id="scriptSelector">
-        <option value="script1">Lord Howe</option>
-        <option value="script2">Clarence Valley</option>
-        <option value="script3">Dunoon Gazette</option>
+        <option value="PDFscript">Lord Howe Island Signal</option>
+        <option value="IndesignScript">Dunoon Gazette</option>
+        <option value="IndesignScript">Tarrangower Times</option>	
     </select>
     </br>
     <input type="date" id="publishDate" placeholder="Select publish date">
@@ -66,9 +66,11 @@
     <input type="time" id="publishTime" placeholder="Select publish time">
     </br>
     <button id="runScriptButton">Run Script</button>
-    <h3>Output:</h3>
+    </br>
+    <button id="downloadButton">Download output as HTML</button>
     <textarea id="xmlOutput" readonly></textarea>
-    <button id="copyButton">Copy Text</button>
+    
+    
     
     <script>
         document.getElementById('runScriptButton').addEventListener('click', function() {
@@ -89,14 +91,13 @@
             var publishDate = document.getElementById('publishDate').value;
             var publishTime = document.getElementById('publishTime').value;
             var textString = document.getElementById('xmlInput').value;
-
-            // Prepend publish date and time to the output
-            const dateTimeString = "Publish Date: " + publishDate + " at " + publishTime + "\n";
-            textString = dateTimeString + textString;
+            var scriptSelector = document.getElementById('scriptSelector');
+            var selectedOption = scriptSelector.options[scriptSelector.selectedIndex];
+            var scriptName = selectedOption.textContent;
 
             // Depending on the script selected, modify the text
             switch(scriptType) {
-                case 'script1':
+                case 'PDFscript':
                      // Apply Script 1 modifications
     textString = textString.replace(/<LBody>/gm, '<LBody>• ');
     textString = textString.replace(/LBody/gm, '_3_Story_text');
@@ -167,16 +168,42 @@
         !line.includes('<Figure>') && line.startsWith('@')
     ).join('\n');
                     break;
-                case 'script3':
+                case 'IndesignScript':
                     // Modifications for script 3
-                    textString = modifyTextForScript3(textString);
+    textString = textString.replace(/\n+/g, '\n');
+    textString = textString.replace(/> +/g, '>');
+    textString = textString.replace(/(<h1>[^<]+?)\n/gm, '$1');
+    textString = textString.replace(/(<h1>[^<]+?)\n/gm, '$1');
+    textString = textString.replace(/(<h1>[^<]+?)\n/gm, '$1');
+    textString = textString.replace(/&amp;/g, '&');
+    textString = textString.replace(/&quot;/g, '"');
+    textString = textString.replace(/&#160;/g, '');
+    textString = textString.replace(/&apos;/g, '\'');
+    textString = textString.replace(/></g, '>\n<');
+    textString = textString.replace(/<\/p>\n<p>(.+)/g, '</p>\n<h1>$1</h1>\n<p>');
+    textString = textString.replace(/<p>\n+/g, '<p>');
+    textString = textString.replace(/^(?!<)(.*)$/gm, '<p>$1');
+    textString = textString.replace(/<p>\n/g, '\n');
+    textString = textString.replace(/ +/g, ' ');
+    textString = textString.replace(/([^>]$)/gm, '$1</p>');
+    textString = textString.replace(/\n<\/p>/gm, '</p>');
+    textString = textString.replace(/<h1>/g, '    <article>\n     <div class="title">\n       <h1>');
+    textString = textString.replace(/<\/h1>/g, `</h1>\n      </div>\n      <div class="publish-date">\n     <p>Published on ${publishDate} ${publishTime}</p>\n      </div>\n      <div class="article-content">`);     
+    textString = textString.replace(/<\/p>\n    <article>/g, '</p>\n      </div>\n    </article>\n    <article>');
+    textString = textString.replace(/<p>/g, '     <p>');
+    textString = textString.replace(/\n+/g, '\n');
+    textString = textString.replace(/<\/Root>[\s\S]*/, '    </div>\n   </article>\n  </body>\n</html>');    
+    textString = textString.replace(/^[\s\S]*?<Root>/, `<!DOCTYPE html>\n<html>\n  <head>\n    <title>${scriptName}</title>\n  </head>\n  <body>`);
+
+
+
                     break;
             }
 
             document.getElementById('xmlOutput').value = textString;
         });
 
-        function modifyTextForScript1(text) {
+        function modifyTextForPDFscript(text) {
             // Implement modifications specific to script 1
             return text.replace(/example/g, 'replacement');
         }
@@ -186,10 +213,34 @@
             return text.replace(/example/g, 'replacement');
         }
 
-        function modifyTextForScript3(text) {
+        function modifyTextForIndesignScript(text) {
             // Implement modifications specific to script 3
             return text.replace(/example/g, 'replacement');
         }
+        
+ document.getElementById('downloadButton').addEventListener('click', function() {
+        var textString = document.getElementById('xmlOutput').value;
+        var scriptSelector = document.getElementById('scriptSelector');
+        var selectedOption = scriptSelector.options[scriptSelector.selectedIndex];
+        var scriptName = selectedOption.textContent; // Retrieve the text content of the selected option
+        downloadHtmlFile(textString, scriptName); // Pass the script name to the download function
+    });
+
+    function downloadHtmlFile(text, scriptName) {
+        var blob = new Blob([text], { type: 'text/html' });
+        var url = URL.createObjectURL(blob);
+
+        var a = document.createElement('a');
+        a.href = url;
+
+        // Set the filename based on the text content of the selected option
+        a.download = scriptName.toLowerCase().replace(/\s+/g, '_') + '_processed_text.html';
+
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+</script>
     </script>
 </body>
 </html>
