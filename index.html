@@ -69,6 +69,7 @@
     </select>
     <input type="date" id="publishDate" placeholder="Select publish date">
     <input type="time" id="publishTime" placeholder="Select publish time">
+    <input type="text" id="tagInput" placeholder="Tag for all stories">
     <button id="runScriptButton">Run Script</button>
 
 </div>
@@ -176,6 +177,7 @@
                     textString = textString.replace(/&apos;/g, '\'');
                     textString = textString.replace(/></g, '>\n<');
                     textString = textString.replace(/<\/p>\n<p>(.+)/g, '</p>\n<h1>$1</h1>\n<p>');
+                    textString = textString.replace(/<Root>\n<p>(.+)/g, '<Root>\n<h1>$1</h1>\n<p>');
                     textString = textString.replace(/<p>\n+/g, '<p>');
                     textString = textString.replace(/^(?!<)(.*)$/gm, '<p>$1');
                     textString = textString.replace(/<p>\n/g, '\n');
