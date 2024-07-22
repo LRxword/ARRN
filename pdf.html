@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PDF input</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f9;
+        color: #333;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+    }
+    textarea {
+        width: 90%;
+        height: 300px;
+        margin: 10px;
+        display: block;
+        padding: 10px;
+        border-radius: 8px;
+        border: 2px solid #005A9C;
+        background-color: #ffffff;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .controls {
+        width: 90%;
+        margin: 10px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    select, button {
+        padding: 8px 16px;
+        font-size: 14px;
+        border-radius: 8px;
+        border: 2px solid #005A9C;
+        background-color: #ffffff;
+        margin-right: 10px;
+    }
+    button {
+        background-color: #007BFF;
+        color: #ffffff;
+        cursor: pointer;
+        display: inline-block;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+    h3 {
+        text-align: center;
+        color: #005A9C;
+    }
+    #publishTime {
+        width: 110px;
+    }
+</style>
+</head>
+<body>
+    <textarea id="textInput" placeholder="Paste your text here..."></textarea>
+    
+    <div class="controls">
+        <select id="scriptSelector">
+            <option value="PDFFormat1">PDF format</option>
+            <option value="PDFFormat2">PDF format (no paras)</option>
+        </select>
+        <button id="runScriptButton">Run Script</button>
+    </div>
+
+    <textarea id="textOutput" readonly></textarea>
+    
+    <script>
+        document.getElementById('runScriptButton').addEventListener('click', function() {
+            var scriptType = document.getElementById('scriptSelector').value;
+            var textString = document.getElementById('textInput').value;
+
+            switch(scriptType) {
+                case 'PDFFormat1':
+                    textString = textString.replace(/\n/g,' ');
+                    textString = textString.replace(/\. +/g, '.\r\r');
+                    textString = textString.replace(/“/g, '\x22');
+                    textString = textString.replace(/”/g, '\x22');
+                    textString = textString.replace(/^ +/gm, '');
+                    break;
+                case 'PDFFormat2':
+                    textString = textString.replace(/\n/g,' ');
+                    textString = textString.replace(/“/g, '\x22');
+                    textString = textString.replace(/”/g, '\x22');
+                    textString = textString.replace(/^ +/gm, '');
+                    break;
+            }
+
+            document.getElementById('textOutput').value = textString;
+        });
+
+        document.getElementById('downloadButton').addEventListener('click', function() {
+            var textString = document.getElementById('textOutput').value;
+            var scriptSelector = document.getElementById('scriptSelector');
+            var selectedOption = scriptSelector.options[scriptSelector.selectedIndex];
+            var scriptName = selectedOption.textContent;
+
+            downloadFile(textString, scriptName, 'txt');
+        });
+
+    </script>
+</body>
+</html>
