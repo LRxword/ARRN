@@ -64,6 +64,7 @@
 <select id="scriptSelector">
         <option value="LHIscript">Lord Howe Island Signal</option>
         <option value="IndesignScript">Dunoon Gazette</option>
+        <option value="IndesignScript">Naracoorte News</option>
         <option value="IndesignScript">Tarrangower Times</option>
         <option value="IndesignScript">Clarence Valley</option>
 
@@ -165,8 +166,12 @@
                     break;
                 case 'IndesignScript':
                     textString = textString.replace(/<p.+?>/g, '<p>');
+                    textString = textString.replace(/<author>(.+?)\n(.+?)<\/author>/g, '<author>$1 $2<\/author>');
+                    textString = textString.replace(/<\/p><author>(.+?)<\/author><p>(.+)/g, '</p><h1>$2</h1><p>$1');
+                    textString = textString.replace(/<\/p><p>(.+)/g, '</p>\n<h1>$1</h1>\n<p>');
+                    textString = textString.replace(/<author>([\s\S]*?)<\/author><p>/g, '<p>$1\n');
                     textString = textString.replace(/<\/p_(.+?)>/g, '<category$1></p>');
-                    textString = textString.replace(/\n  /g, '\n • ');
+                    textString = textString.replace(/\n  /g, '\n • ')
                     textString = textString.replace(/(<h1>.+?) *\n(.+<\/h1>)/g, '$1: $2');                    
                     textString = textString.replace(/\n+/g, '\n');
                     textString = textString.replace(/> +/g, '>');
@@ -178,7 +183,6 @@
                     textString = textString.replace(/&#160;/g, '');
                     textString = textString.replace(/&apos;/g, '\'');
                     textString = textString.replace(/></g, '>\n<');
-                    textString = textString.replace(/<\/p>\n<p>(.+)/g, '</p>\n<h1>$1</h1>\n<p>');
                     textString = textString.replace(/<Root>\n<p>(.+)/g, '<Root>\n<h1>$1</h1>\n<p>');
                     textString = textString.replace(/<p>\n+/g, '<p>');
                     textString = textString.replace(/^(?!<)(.*)$/gm, '<p>$1');
@@ -196,6 +200,8 @@
                     textString = textString.replace(/<category(.+)><\/p>/g, '</p>\n      </div>\n       <div class="category">\n       <p>$1</p>');
                     textString = textString.replace(/ +<div class="article-content">\n +<p>Rodney Stevens<\/p>/g, '      <div class="author">\n      <p>Rodney Stevens, Clarence Valley Independent</p>\n      </div>\n      <div class="article-content">');
                     textString = textString.replace(/ +<div class="article-content">\n +<p>Emma Pritchard<\/p>/g, '      <div class="author">\n      <p>Emma Pritchard, Clarence Valley Independent</p>\n      </div>\n      <div class="article-content">');
+                    textString = textString.replace(/ +<div class="article-content">\n +<p>by NASIK SWAMI.*<\/p>/g, '      <div class="author">\n      <p>Nasik Swami, Naracoorte Community News</p>\n      </div>\n      <div class="article-content">');
+                    textString = textString.replace(/ +<div class="article-content">\n +<p>by CHRIS OLDFIELD.*<\/p>/g, '      <div class="author">\n      <p>Chris Oldfield, Naracoorte Community News</p>\n      </div>\n      <div class="article-content">');
                     break;
         
                     
@@ -203,7 +209,7 @@
                     textString = textString.replace(/\n+/g, '\n');
                     textString = textString.replace(/></g, '>\n<');
                     textString = textString.replace(/<p.+?>/g, '<p>');
-                    textString = textString.replace(/<\/p_(.+?)>/g, '<category$1></p>');                                                                             
+                    textString = textString.replace(/<\/p_(.+?)>/gm, '<category$1></p>'); 
                     textString = textString.replace(/\n+/g, '\n');
                     textString = textString.replace(/> +/g, '>');
                     textString = textString.replace(/(<h1>[^<]+?)\n/gm, '$1');
