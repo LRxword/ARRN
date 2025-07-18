@@ -134,10 +134,6 @@
                     textString = textString.replace(/<\/Root>[\s\S]*/, '    </div>\n   </article>\n  </body>\n</html>');    
                     textString = textString.replace(/^[\s\S]*?<Root>/, `<!DOCTYPE html>\n<html>\n  <head>\n    <title>${scriptName}</title>\n  </head>\n  <body>`);
                     textString = textString.replace(/<category(.+)><\/p>/g, '</p>\n      </div>\n       <div class="category">\n       <p>$1</p>');
-                    textString = textString.replace(/ +<div class="article-content">\n +<p>Rodney Stevens<\/p>/g, '      <div class="author">\n      <p>Rodney Stevens, Clarence Valley Independent</p>\n      </div>\n      <div class="article-content">');
-                    textString = textString.replace(/ +<div class="article-content">\n +<p>Emma Pritchard<\/p>/g, '      <div class="author">\n      <p>Emma Pritchard, Clarence Valley Independent</p>\n      </div>\n      <div class="article-content">');
-                    textString = textString.replace(/ +<div class="article-content">\n +<p>by NASIK SWAMI.*<\/p>/g, '      <div class="author">\n      <p>Nasik Swami, Naracoorte Community News</p>\n      </div>\n      <div class="article-content">');
-                    textString = textString.replace(/ +<div class="article-content">\n +<p>by CHRIS OLDFIELD.*<\/p>/g, '      <div class="author">\n      <p>Chris Oldfield, Naracoorte Community News</p>\n      </div>\n      <div class="article-content">');
                     break;
             }
 
