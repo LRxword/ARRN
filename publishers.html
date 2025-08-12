@@ -101,6 +101,9 @@
 
             switch(scriptType) {
                 case 'IndesignScript':
+                    textString = textString.replace(/&apos;/g, "'");
+                    textString = textString.replace(/&quot;/g, '"');
+                    textString = textString.replace(/&amp;/g, '&');
                     textString = textString.replace(/<p.+?>/g, '<p>');
                     textString = textString.replace(/<author>(.+?)\n(.+?)<\/author>/g, '<author>$1 $2<\/author>');
                     textString = textString.replace(/<\/p><author>(.+?)<\/author><p>(.+)/g, '</p><h1>$2</h1><p>$1');
@@ -108,7 +111,7 @@
                     textString = textString.replace(/<author>([\s\S]*?)<\/author><p>/g, '<p>$1\n');
                     textString = textString.replace(/<\/p_(.+?)>/g, '<category$1></p>');
                     textString = textString.replace(/\n  /g, '\n • ')
-                    textString = textString.replace(/(<h1>.+?) *\n(.+<\/h1>)/g, '$1: $2');                    
+                    textString = textString.replace(/(<h1>.+?) *\n(.+<\/h1>)/g, '$1: $2');
                     textString = textString.replace(/\n+/g, '\n');
                     textString = textString.replace(/> +/g, '>');
                     textString = textString.replace(/(<h1>[^<]+?)\n/gm, '$1');
@@ -134,6 +137,7 @@
                     textString = textString.replace(/<\/Root>[\s\S]*/, '    </div>\n   </article>\n  </body>\n</html>');    
                     textString = textString.replace(/^[\s\S]*?<Root>/, `<!DOCTYPE html>\n<html>\n  <head>\n    <title>${scriptName}</title>\n  </head>\n  <body>`);
                     textString = textString.replace(/<category(.+)><\/p>/g, '</p>\n      </div>\n       <div class="category">\n       <p>$1</p>');
+                    textString = textString.replace(/^\s*[\r\n]/gm, '');  // Remove single blank lines
                     break;
             }
 
