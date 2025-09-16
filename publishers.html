@@ -104,7 +104,7 @@
                     textString = textString.replace(/&apos;/g, "'");
                     textString = textString.replace(/&quot;/g, '"');
                     textString = textString.replace(/&amp;/g, '&');
-                    textString = textString.replace(/<p.+?>/g, '<p>');
+                    textString = textString.replace(/<p.*?>/g, '<p>');
                     textString = textString.replace(/<author>(.+?)\n(.+?)<\/author>/g, '<author>$1 $2<\/author>');
                     textString = textString.replace(/<\/p><author>(.+?)<\/author><p>(.+)/g, '</p><h1>$2</h1><p>$1');
                     textString = textString.replace(/<\/p><p>(.+)/g, '</p>\n<h1>$1</h1>\n<p>');
