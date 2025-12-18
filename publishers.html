@@ -101,9 +101,33 @@
 
             switch(scriptType) {
                 case 'IndesignScript':
-                    textString = textString.replace(/&apos;/g, "'");
-                    textString = textString.replace(/&quot;/g, '"');
-                    textString = textString.replace(/&amp;/g, '&');
+const fixes = {
+  '&apos;': "'",
+  '&quot;': '"',
+  '&amp;': '&',
+  '&#160;': '',
+  '&nbsp;': ' ',
+  '&lt;': '<',
+  '&gt;': '>',
+  '&ndash;': '–',
+  '&mdash;': '—',
+  '&lsquo;': "'",
+  '&rsquo;': "'",
+  '&ldquo;': '"',
+  '&rdquo;': '"',
+  '&hellip;': '…',
+  'â€™': "'",
+  'â€œ': '"',
+  'â€�': '"',
+  'â€“': '–',
+  'â€”': '—',
+  'â€¦': '…',
+  'Â ': ' '
+};
+
+for (const [bad, good] of Object.entries(fixes)) {
+  textString = textString.split(bad).join(good);
+}
                     textString = textString.replace(/<p.*?>/g, '<p>');
                     textString = textString.replace(/<author>(.+?)\n(.+?)<\/author>/g, '<author>$1 $2<\/author>');
                     textString = textString.replace(/<\/p><author>(.+?)<\/author><p>(.+)/g, '</p><h1>$2</h1><p>$1');
